@@ -554,7 +554,7 @@ body.tyler {
 .progress-circle {
   stroke-dasharray: 157;
   stroke-dashoffset: 157;
-  animation: progress-update 0.3s ease-out forwards;
+  transition: stroke-dashoffset 0.3s ease-out;
 }
 
 /* Different colors for light theme */
@@ -600,11 +600,7 @@ body.tyler {
   }
 }
 
-@keyframes progress-update {
-  to {
-    stroke-dashoffset: calc(157 - (157 * var(--scroll-progress, 0)));
-  }
-}
+/* Removed animation - using direct style update instead */
 
 /* Mobile responsiveness for scroll navigator */
 @media (max-width: 768px) {
@@ -883,6 +879,11 @@ body.tyler {
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
+}
+
+#experience {
+  padding: 4rem 2rem;
+  min-height: auto;
 }
 
 .section-title {
@@ -1737,6 +1738,135 @@ body.tyler {
   box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
 }
 
+/* Achievements Grid */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+  padding: 0 1rem;
+}
+
+.achievement-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.achievement-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(255, 107, 157, 0.3);
+  border-color: var(--tyler-pink);
+}
+
+.achievement-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  animation: float 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.achievement-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.achievement-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: var(--tyler-pink);
+}
+
+.achievement-card p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Leadership Container */
+.leadership-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 3rem 0;
+  padding: 0 1rem;
+}
+
+.leadership-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.leadership-card:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 24px rgba(255, 107, 157, 0.25);
+  border-color: var(--tyler-pink);
+}
+
+.leadership-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.leadership-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leadership-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.leadership-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--tyler-pink);
+  margin-bottom: 0.3rem;
+}
+
+.leadership-org {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.leadership-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.85;
+  padding-left: 4rem;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 /* Mobile Responsiveness for Compact Timeline */
 @media (max-width: 768px) {
   .timeline-container.compact .timeline-card {
@@ -1749,6 +1879,21 @@ body.tyler {
   
   .timeline-container.compact .timeline-title h4 {
     font-size: 0.85rem;
+  }
+  
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .leadership-description {
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+  
+  .leadership-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   .timeline-container.compact .timeline-description {

@@ -27,8 +27,13 @@ const ScrollNavigator = () => {
       // Check if near bottom
       setIsNearBottom(scrollBottom < 200);
 
-      // Update CSS custom property for progress circle
-      document.documentElement.style.setProperty('--scroll-progress', progress);
+      // Update progress circle directly
+      const progressCircle = document.querySelector('.progress-circle');
+      if (progressCircle) {
+        const circumference = 157;
+        const offset = circumference - (circumference * progress);
+        progressCircle.style.strokeDashoffset = offset;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

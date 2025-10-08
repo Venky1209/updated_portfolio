@@ -5,10 +5,26 @@ const Experience = () => {
 
   const experiences = [
     {
+      company: "Sairam Techno Incubator",
+      position: "AI/ML Intern",
+      duration: "Dec 2024 – Jan 2025",
+      location: "Chennai, Tamil Nadu",
+      description: "Specialized in AI/ML development with focus on Retrieval-Augmented Generation (RAG) and LangChain. Built AI-powered applications and worked on innovative machine learning solutions.",
+      achievements: [
+        "Developed RAG-based AI applications using LangChain framework",
+        "Implemented machine learning models for real-world applications",
+        "Worked with cutting-edge AI technologies and frameworks",
+        "Contributed to innovative AI/ML projects at the incubator"
+      ],
+      technologies: ["Python", "LangChain", "RAG", "Machine Learning", "AI/ML", "NLP"],
+      logo: "https://cdn-icons-png.flaticon.com/512/4712/4712109.png",
+      type: "work"
+    },
+    {
       company: "Zoho Corp",
       position: "Zoho CRM Marketplace Extension Developer",
       duration: "Jun 2025 – Jul 2025",
-      location: "Tenkasi, Tamilnadu",
+      location: "Tenkasi, Tamil Nadu",
       description: "Contributing to CRM extension development using Zoho Sigma, integrating APIs like Meta, GitHub, and Zoho Assist to automate business workflows.",
       achievements: [
         "Developed CRM extensions using Zoho Sigma and integrated multiple APIs",

@@ -11,7 +11,7 @@ const Hero = () => {
   const downloadResume = () => {
     // Create a link to download the resume
     const link = document.createElement('a');
-    link.href = '/Venkatkaushal_A_CV.pdf'; // Updated to use the actual CV from public folder
+    link.href = '/Venkatkaushal_A_Resume.pdf';
     link.download = 'Venkatkaushal_A_Resume.pdf';
     link.click();
   };
@@ -59,10 +59,31 @@ const Hero = () => {
                 <FaMapMarkerAlt size={14} />
                 Chennai, Tamil Nadu
               </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <a 
+                href="https://linkedin.com/in/venky1209" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#0077b5';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'inherit';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
                 <FaLinkedin size={14} />
                 linkedin.com/in/venky1209
-              </span>
+              </a>
             </p>
           </div>
         </div>
