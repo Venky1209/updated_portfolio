@@ -16,7 +16,7 @@ export default function About() {
           <div className="about-photo-col">
             <div className="about-photo-container">
               <Image
-                src="/images/profile.jpg"
+                src="/images/logos/profile.jpg"
                 alt="Venkatkaushal A."
                 className="about-photo"
                 width={960}
