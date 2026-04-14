@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { ARCADE_TEASE_EVENT } from '@/lib/arcadeNudge';
 
 /*
   HeroWaveCanvas — Interstellar Miller's-planet-style ocean waves.
@@ -15,6 +16,8 @@ interface WaveState {
   velocity: number;  // cursor movement speed
   active: boolean;   // cursor inside name?
   surgeMult: number; // wave:surge multiplier (default 1)
+  interactionStart: number | null; // timestamp of continuous interaction start
+  nudgeFired: boolean; // true once arcade:tease has been dispatched
 }
 
 // ── HELPER: rounded rect (for browsers without ctx.roundRect) ──
@@ -174,6 +177,8 @@ export default function HeroWaveCanvas({
     velocity: 0,
     active: false,
     surgeMult: 1,
+    interactionStart: null,
+    nudgeFired: false,
   });
   const animRef = useRef<number>(0);
 
@@ -182,7 +187,8 @@ export default function HeroWaveCanvas({
 
     const canvas = canvasRef.current;
     const name = nameRef.current;
-    if (!canvas || !name) return;
+    const interactionTarget = name?.parentElement;
+    if (!canvas || !name || !interactionTarget) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -218,6 +224,9 @@ export default function HeroWaveCanvas({
     let time = 0;
     let lastX = 0;
     let tarsAngle = 0;
+    let passiveNudgeTimeout: number | null = null;
+    let renderWidth = 0;
+    let renderHeight = 0;
 
     const getWaveY = (
       x: number,
@@ -231,17 +240,28 @@ export default function HeroWaveCanvas({
       );
     };
 
+    const dispatchArcadeTease = () => {
+      if (stateRef.current.nudgeFired) return;
+
+      window.dispatchEvent(new Event(ARCADE_TEASE_EVENT));
+      stateRef.current.nudgeFired = true;
+    };
+
     const draw = () => {
-      const { width, height } = canvas;
+      if (renderWidth === 0 || renderHeight === 0) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
+
       const state = stateRef.current;
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, renderWidth, renderHeight);
 
       // Phase offset driven by cursor X
       const phaseOffset = (state.cursorX - 0.5) * Math.PI * 3;
 
       // Target amplitude: cursor Y drives height, velocity adds drama
       const baseAmp = state.active
-        ? height * (0.15 + state.cursorY * 0.25)
+        ? renderHeight * (0.15 + state.cursorY * 0.25)
         : 0;
 
       waves.forEach((wave, i) => {
@@ -254,18 +274,18 @@ export default function HeroWaveCanvas({
 
         // Draw wave fill
         ctx.beginPath();
-        ctx.moveTo(0, height);
+        ctx.moveTo(0, renderHeight);
 
-        for (let x = 0; x <= width; x += 2) {
-          const y = height * 0.6 - getWaveY(x, wave, time, phaseOffset);
+        for (let x = 0; x <= renderWidth; x += 2) {
+          const y = renderHeight * 0.6 - getWaveY(x, wave, time, phaseOffset);
           ctx.lineTo(x, y);
         }
 
-        ctx.lineTo(width, height);
+        ctx.lineTo(renderWidth, renderHeight);
         ctx.closePath();
 
         // Wave fill: dark ocean gradient
-        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        const gradient = ctx.createLinearGradient(0, 0, 0, renderHeight);
         gradient.addColorStop(
           0,
           `rgba(10, 20, 50, ${wave.opacity})`
@@ -280,9 +300,9 @@ export default function HeroWaveCanvas({
         // Foam crest line — only on the front wave
         if (i === 0) {
           ctx.beginPath();
-          for (let x = 0; x <= width; x += 2) {
+          for (let x = 0; x <= renderWidth; x += 2) {
             const y =
-              height * 0.6 - getWaveY(x, wave, time, phaseOffset);
+              renderHeight * 0.6 - getWaveY(x, wave, time, phaseOffset);
             if (x === 0) {
               ctx.moveTo(x, y);
             } else {
@@ -298,18 +318,18 @@ export default function HeroWaveCanvas({
 
       // TARS — movie-accurate two-leg silhouette on wave crest
       if (state.active && waves[0].amplitude > 2) {
-        const tarsX = state.cursorX * width;
+        const tarsX = state.cursorX * renderWidth;
         const waveY =
-          height * 0.6 -
+          renderHeight * 0.6 -
           getWaveY(tarsX, waves[0], time, phaseOffset);
 
         // Wave slope → tilt angle
         const dx = 4;
         const y1 =
-          height * 0.6 -
+          renderHeight * 0.6 -
           getWaveY(tarsX - dx, waves[0], time, phaseOffset);
         const y2 =
-          height * 0.6 -
+          renderHeight * 0.6 -
           getWaveY(tarsX + dx, waves[0], time, phaseOffset);
         const rawAngle =
           Math.atan2(y2 - y1, dx * 2) * (180 / Math.PI);
@@ -327,9 +347,16 @@ export default function HeroWaveCanvas({
 
     // Resize canvas to match name element dimensions
     const resize = () => {
-      const rect = name.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height * 0.65;
+      const dpr = window.devicePixelRatio || 1;
+      renderWidth = canvas.offsetWidth;
+      renderHeight = canvas.offsetHeight;
+
+      if (renderWidth === 0 || renderHeight === 0) return;
+
+      canvas.width = Math.floor(renderWidth * dpr);
+      canvas.height = Math.floor(renderHeight * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -337,13 +364,32 @@ export default function HeroWaveCanvas({
     // Mouse tracking on the name element
     const onEnter = () => {
       stateRef.current.active = true;
+
+      if (passiveNudgeTimeout !== null) {
+        window.clearTimeout(passiveNudgeTimeout);
+      }
+      passiveNudgeTimeout = window.setTimeout(() => {
+        if (
+          stateRef.current.active &&
+          !stateRef.current.nudgeFired
+        ) {
+          dispatchArcadeTease();
+        }
+      }, 3000);
     };
     const onLeave = () => {
       stateRef.current.active = false;
       stateRef.current.velocity = 0;
+      stateRef.current.interactionStart = null;
+      stateRef.current.nudgeFired = false;
+
+      if (passiveNudgeTimeout !== null) {
+        window.clearTimeout(passiveNudgeTimeout);
+        passiveNudgeTimeout = null;
+      }
     };
     const onMove = (e: MouseEvent) => {
-      const rect = name.getBoundingClientRect();
+      const rect = interactionTarget.getBoundingClientRect();
       const newX = (e.clientX - rect.left) / rect.width;
       stateRef.current.velocity = Math.abs(newX - lastX) * 10;
       lastX = newX;
@@ -352,11 +398,22 @@ export default function HeroWaveCanvas({
         0,
         Math.min(1, (e.clientY - rect.top) / rect.height)
       );
+
+      // Arcade nudge — fire after 5s of continuous interaction
+      if (stateRef.current.interactionStart === null) {
+        stateRef.current.interactionStart = Date.now();
+      }
+      if (
+        !stateRef.current.nudgeFired &&
+        Date.now() - (stateRef.current.interactionStart ?? 0) > 5000
+      ) {
+        dispatchArcadeTease();
+      }
     };
 
-    name.addEventListener('mouseenter', onEnter);
-    name.addEventListener('mouseleave', onLeave);
-    name.addEventListener('mousemove', onMove);
+    interactionTarget.addEventListener('mouseenter', onEnter);
+    interactionTarget.addEventListener('mouseleave', onLeave);
+    interactionTarget.addEventListener('mousemove', onMove);
 
     // Wave surge event — dive transition triggers this
     const onSurge = () => {
@@ -373,9 +430,12 @@ export default function HeroWaveCanvas({
       cancelAnimationFrame(animRef.current);
       window.removeEventListener('resize', resize);
       window.removeEventListener('wave:surge', onSurge);
-      name.removeEventListener('mouseenter', onEnter);
-      name.removeEventListener('mouseleave', onLeave);
-      name.removeEventListener('mousemove', onMove);
+      interactionTarget.removeEventListener('mouseenter', onEnter);
+      interactionTarget.removeEventListener('mouseleave', onLeave);
+      interactionTarget.removeEventListener('mousemove', onMove);
+      if (passiveNudgeTimeout !== null) {
+        window.clearTimeout(passiveNudgeTimeout);
+      }
     };
   }, [nameRef]);
 

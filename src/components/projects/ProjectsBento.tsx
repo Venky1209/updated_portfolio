@@ -5,13 +5,75 @@ import { gsap, Flip } from '@/lib/gsap';
 import { ArrowUpRight, Github } from 'lucide-react';
 import PrizmDemo from '@/components/projects/PrizmDemo';
 import HeartwiseDemo from '@/components/projects/HeartwiseDemo';
+import HackRadarDemo from '@/components/projects/HackRadarDemo';
+import OverloadDemo from '@/components/projects/OverloadDemo';
 import SectionReveal from '@/components/ui/SectionReveal';
 
 /* ─── Project Data ─── */
 const BENTO_PROJECTS = [
   {
-    id: 'prizm',
+    id: 'hackradar',
     index: '01',
+    title: 'HACKRADAR',
+    subtitle: 'Hackathon Intelligence',
+    year: '2025',
+    role: 'Full-Stack Developer',
+    accent: '#00d4ff',
+    liveUrl: 'https://hack-radar-omega.vercel.app/',
+    repoUrl: 'https://github.com/Venky1209/HackRadar',
+    caseStudy: {
+      headline: 'HACKATHON INTELLIGENCE\n& DISCOVERY PLATFORM',
+      columns: [
+        { title: 'THE PROBLEM', text: 'Finding relevant hackathons across platforms is time-consuming with no centralized real-time source.' },
+        { title: 'THE APPROACH', text: 'Static-first architecture with real-time filters across 60+ events, optimized for sub-2s load times.' },
+        { title: 'THE RESULT', text: 'Full-stack platform for discovering hackathons with intelligent filtering and blazing-fast performance.' },
+      ],
+      stack: ['Next.js 14', 'TypeScript', 'Supabase', 'Tailwind CSS'],
+    },
+  },
+  {
+    id: '108-overload',
+    index: '02',
+    title: '108-OVERLOAD',
+    subtitle: 'Emergency Dispatch Sim',
+    year: '2025',
+    role: 'RL Systems + Full-Stack Developer',
+    accent: '#ff6b00',
+    liveUrl: 'https://huggingface.co/spaces/Venky12099/dispatch-showcase',
+    repoUrl: 'https://github.com/Venky1209/dispatch-triage',
+    caseStudy: {
+      headline: 'EMERGENCY DISPATCH\nSIMULATION SYSTEM',
+      columns: [
+        { title: 'THE PROBLEM', text: 'Ambulance dispatch decisions are life-critical and training requires realistic dynamic scenarios.' },
+        { title: 'THE APPROACH', text: 'RL-style simulator with multi-difficulty scenarios (EASY/MEDIUM/HARD) and real-world constraints.' },
+        { title: 'THE RESULT', text: 'Live metric visualization with dynamic dispatch decisions across complex emergency scenarios.' },
+      ],
+      stack: ['Reinforcement Learning', 'Gradio', 'Python', 'Simulation'],
+    },
+  },
+  {
+    id: 'heartwise',
+    index: '03',
+    title: 'HEARTWISE',
+    subtitle: 'Cardiac AI',
+    year: '2024',
+    role: 'ML Engineer',
+    accent: '#ff3c00',
+    liveUrl: 'https://landing-page-phi-six-97.vercel.app/',
+    repoUrl: 'https://github.com/Venky1209/Heartwise',
+    caseStudy: {
+      headline: 'CARDIAC HEALTH PREDICTOR\nESP32 + AD8284 → 5 ML Models → Risk Score',
+      columns: [
+        { title: 'HARDWARE', text: 'ESP32 + ECG sensor → live signal acquisition from AD8284 analog front-end.' },
+        { title: 'PIPELINE', text: '5 ML models ensemble average — Random Forest, SVM, Neural Net, XGBoost, DenseNet-121 — 89% accuracy.' },
+        { title: 'OUTPUT', text: 'Risk score + personalized diet plan generated via Gemini API integration.' },
+      ],
+      stack: ['TensorFlow', 'Gemini API', 'ML', 'Healthcare'],
+    },
+  },
+  {
+    id: 'prizm',
+    index: '04',
     title: 'PRIZM',
     subtitle: 'Audio Intelligence',
     year: '2025',
@@ -27,26 +89,6 @@ const BENTO_PROJECTS = [
         { title: 'THE RESULT', text: 'Real-time mastering in seconds — democratizing professional audio production.' },
       ],
       stack: ['Python', 'NLP', 'Signal Processing', 'AI'],
-    },
-  },
-  {
-    id: 'heartwise',
-    index: '02',
-    title: 'HEARTWISE',
-    subtitle: 'Cardiac AI',
-    year: '2024',
-    role: 'ML Engineer',
-    accent: '#ff3c00',
-    liveUrl: null as string | null,
-    repoUrl: 'https://github.com/Venky1209/Heartwise',
-    caseStudy: {
-      headline: 'CARDIAC HEALTH PREDICTOR\nESP32 + AD8284 → 5 ML Models → Risk Score',
-      columns: [
-        { title: 'HARDWARE', text: 'ESP32 + ECG sensor → live signal acquisition from AD8284 analog front-end.' },
-        { title: 'PIPELINE', text: '5 ML models ensemble average — Random Forest, SVM, Neural Net, XGBoost, DenseNet-121 — 89% accuracy.' },
-        { title: 'OUTPUT', text: 'Risk score + personalized diet plan generated via Gemini API integration.' },
-      ],
-      stack: ['TensorFlow', 'Gemini API', 'ML', 'Healthcare'],
     },
   },
 ];
@@ -253,6 +295,12 @@ export default function ProjectsBento() {
               >
                 {/* Demo area — top 60% */}
                 <div className="demo-area">
+                  {project.id === 'hackradar' && (
+                    <HackRadarDemo active={hoveredId === 'hackradar' || expandedId === 'hackradar'} />
+                  )}
+                  {project.id === '108-overload' && (
+                    <OverloadDemo active={hoveredId === '108-overload' || expandedId === '108-overload'} />
+                  )}
                   {project.id === 'prizm' && (
                     <PrizmDemo active={hoveredId === 'prizm' || expandedId === 'prizm'} />
                   )}

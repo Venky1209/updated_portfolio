@@ -15,61 +15,42 @@ export function useLenis() {
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 1;
+    // TASK 4: Disable Lenis on touch/mobile devices
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     const isSmallScreen = window.innerWidth < 900;
 
     // Skip Lenis on touch/small devices or reduced motion
-    if (prefersReduced || isTouch || isSmallScreen) {
-      document.documentElement.style.scrollBehavior = 'smooth';
+    if (prefersReduced || isTouchDevice || isSmallScreen) {
       // Still refresh ScrollTrigger for native-scroll animations
       ScrollTrigger.refresh();
       return;
     }
 
+    // TASK 2: Updated Lenis config
     const lenis = new Lenis({
-      duration: 0.95,
-      easing: (t: number) => 1 - Math.pow(1 - t, 2.6),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
+      lerp: 0.1,
       smoothWheel: true,
-      wheelMultiplier: 0.85,
-      touchMultiplier: 1.4,
+      syncTouch: false,
     });
 
     lenisRef.current = lenis;
     window.__lenis = lenis;
 
     const resize = () => lenis.resize();
+
+    // TASK 3: Sync Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value?: number) {
-        if (value !== undefined) {
-          lenis.scrollTo(value, { immediate: true });
-        }
-        return lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-    });
-
-    const raf = (time: number) => {
+    gsap.ticker.add((time: number) => {
       lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(raf);
+    });
     gsap.ticker.lagSmoothing(0);
+
     ScrollTrigger.addEventListener('refresh', resize);
     ScrollTrigger.refresh();
 
     return () => {
-      gsap.ticker.remove(raf);
+      gsap.ticker.remove(lenis.raf as unknown as gsap.TickerCallback);
       ScrollTrigger.removeEventListener('refresh', resize);
       lenis.destroy();
       window.__lenis = null;

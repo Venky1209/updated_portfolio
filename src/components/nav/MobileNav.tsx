@@ -35,7 +35,7 @@ export default function MobileNav() {
     // Small delay to let collapse cleanup complete
     setTimeout(() => {
       if (window.__lenis) {
-        window.__lenis.scrollTo(href, { offset: 0, duration: 1.2 });
+        window.__lenis.scrollTo(href, { offset: -80, duration: 1.2 });
       } else {
         const el = document.querySelector(href);
         el?.scrollIntoView({ behavior: 'smooth' });

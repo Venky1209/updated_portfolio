@@ -36,7 +36,7 @@ export default function About() {
             <p className="about-text">{PERSONAL.bio}</p>
             <div className="about-stats">
               <div className="about-stat">
-                <span className="about-stat-value">3+</span>
+                <span className="about-stat-value">5+</span>
                 <span className="about-stat-label">Projects Shipped</span>
               </div>
               <div className="about-stat">

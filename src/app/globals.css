@@ -348,6 +348,97 @@ img {
   animation: navArcadePulse 1.7s ease-in-out infinite;
 }
 
+@keyframes arcadeGlitch {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+
+  10% {
+    transform: translate(-2px, 1px);
+    opacity: 0.8;
+  }
+
+  20% {
+    transform: translate(2px, -1px);
+    filter: hue-rotate(90deg);
+  }
+
+  30% {
+    transform: translate(-1px, 2px);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translate(1px, -2px);
+    filter: hue-rotate(0deg);
+  }
+
+  50% {
+    transform: translate(0);
+    color: var(--accent);
+  }
+
+  60% {
+    transform: translate(-2px, 0);
+  }
+
+  70% {
+    transform: translate(2px, 1px);
+  }
+
+  80% {
+    transform: translate(0);
+    color: inherit;
+  }
+
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+.arcade-glitch {
+  animation: arcadeGlitch 0.15s steps(1) infinite;
+  animation-duration: 2s;
+  animation-iteration-count: 8;
+}
+
+.arcade-tooltip {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  width: min(20rem, calc(100vw - 2rem));
+  border: 1px solid rgba(var(--accent-rgb), 0.7);
+  background: rgba(10, 10, 10, 0.92);
+  color: #f0ece4;
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  padding: 0.45rem 0.55rem;
+  pointer-events: none;
+  z-index: 70;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.arcade-tooltip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arcade-tease-tooltip {
+  white-space: normal;
+}
+
+[data-theme='light'] .arcade-tooltip {
+  border-color: rgba(12, 12, 12, 0.6);
+  background: rgba(250, 247, 242, 0.95);
+  color: #0c0c0c;
+}
+
 @keyframes navArcadePulse {
   0% {
     box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.45);
@@ -428,7 +519,6 @@ img {
    ============================================================ */
 .hero-section {
   position: relative;
-  height: 100vh;
   height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -463,6 +553,16 @@ img {
   z-index: 2;
 }
 
+.hero-wave-canvas-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 65%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .hero-name {
   font-size: var(--text-display);
   font-weight: var(--weight-black);
@@ -482,9 +582,10 @@ img {
 
 .hero-wave-canvas {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  display: block;
   pointer-events: none;
   z-index: 0;
 }
@@ -1308,6 +1409,12 @@ img {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: #050505;
+  color: #f0ece4;
+}
+
+.prizm-demo canvas {
+  background: #050505;
 }
 
 .prizm-status {
@@ -1326,7 +1433,7 @@ img {
   font-size: 9px;
   letter-spacing: 0.1em;
   padding: 4px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(240, 236, 228, 0.28);
   background: transparent;
   cursor: pointer;
   transition: all 0.2s;
@@ -1342,12 +1449,16 @@ img {
 .prizm-input {
   flex: 1;
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-primary);
+  border: 1px solid rgba(240, 236, 228, 0.3);
+  color: #f0ece4;
   font-size: 11px;
   padding: 7px 12px;
   outline: none;
   font-family: monospace;
+}
+
+.prizm-input::placeholder {
+  color: rgba(240, 236, 228, 0.55);
 }
 
 .prizm-input:focus {
@@ -1369,6 +1480,42 @@ img {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: #050505;
+  color: #f0ece4;
+}
+
+.heartwise-demo canvas {
+  background: #050505;
+}
+
+[data-theme='light'] .prizm-demo,
+[data-theme='light'] .heartwise-demo,
+[data-theme='light'] .prizm-demo canvas,
+[data-theme='light'] .heartwise-demo canvas {
+  background: #050505;
+}
+
+.hackradar-demo,
+.overload-demo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #050505;
+  overflow: hidden;
+}
+
+.overload-hud {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  gap: 10px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 107, 0, 0.9);
+  font-family: var(--font-geist-mono), monospace;
+  pointer-events: none;
 }
 
 .hw-run-btn {
@@ -1402,7 +1549,7 @@ img {
 
 .hw-model-name {
   font-size: 8px;
-  color: var(--text-muted);
+  color: rgba(240, 236, 228, 0.68);
   letter-spacing: 0.1em;
   width: 100px;
   flex-shrink: 0;
@@ -1412,7 +1559,7 @@ img {
 .hw-bar-track {
   flex: 1;
   height: 3px;
-  background: var(--border);
+  background: rgba(240, 236, 228, 0.14);
   position: relative;
 }
 
@@ -1452,7 +1599,7 @@ img {
 
 .hw-avg-label {
   font-size: 9px;
-  color: var(--text-muted);
+  color: rgba(240, 236, 228, 0.68);
   letter-spacing: 0.12em;
 }
 
@@ -1471,7 +1618,7 @@ img {
 
 .hw-diet-item {
   font-size: 9px;
-  color: var(--text-muted);
+  color: rgba(240, 236, 228, 0.72);
   line-height: 1.6;
 }
 
@@ -1479,7 +1626,7 @@ img {
   margin-top: auto;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: rgba(240, 236, 228, 0.68);
   font-size: 9px;
   letter-spacing: 0.1em;
   cursor: pointer;
@@ -1488,7 +1635,7 @@ img {
 }
 
 .hw-reset-btn:hover {
-  color: var(--text-primary);
+  color: #f0ece4;
 }
 
 @keyframes slideIn {

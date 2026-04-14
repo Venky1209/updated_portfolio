@@ -64,7 +64,7 @@ function ChapterDot({
 export default function ChapterNav() {
   const [active, setActive] = useState(0);
 
-  // Track active section via ScrollTrigger
+  // TASK 5: Track active section via ScrollTrigger + IntersectionObserver
   useEffect(() => {
     const triggers: ScrollTrigger[] = [];
 
@@ -88,13 +88,14 @@ export default function ChapterNav() {
     };
   }, []);
 
+  // TASK 2: Use lenis.scrollTo with offset: -80
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
 
     const lenis = (window as unknown as { __lenis?: { scrollTo: (el: HTMLElement, opts: Record<string, unknown>) => void } }).__lenis;
     if (lenis) {
-      lenis.scrollTo(el, { duration: 1.4, easing: (t: number) => 1 - Math.pow(1 - t, 4) });
+      lenis.scrollTo(el, { offset: -80, duration: 1.4, easing: (t: number) => 1 - Math.pow(1 - t, 4) });
     } else {
       el.scrollIntoView({ behavior: 'smooth' });
     }

@@ -112,9 +112,19 @@ export function PrizmDemo({ active }: { active: boolean }) {
     return () => cancelAnimationFrame(animRef.current);
   }, [active, preset]);
 
+  // Read persisted theme on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolio-theme');
+    if (saved && PRESETS[saved]) {
+      setPreset(saved);
+      setStatus(`RESTORED: ${PRESETS[saved].label}`);
+    }
+  }, []);
+
   // Redraw EQ when preset changes
   useEffect(() => {
     if (eqRef.current) drawEQ(eqRef.current, PRESETS[preset]);
+    localStorage.setItem('portfolio-theme', preset);
   }, [preset]);
 
   const apply = useCallback(() => {

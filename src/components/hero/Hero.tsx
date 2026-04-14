@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ArrowDownRight } from 'lucide-react';
 import { PERSONAL } from '@/data/portfolio';
 import LiveClock from '@/components/hero/LiveClock';
 import HeroWaveCanvas from '@/components/hero/HeroWaveCanvas';
 import { useDive } from '@/components/dive/useDive';
+import { useArcade } from '@/components/Arcade/ArcadeContext';
 import gsap from 'gsap';
 
 interface LenisInstance {
@@ -20,6 +21,8 @@ export default function Hero() {
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const scrollRef = useRef<HTMLSpanElement>(null);
   const { dive } = useDive();
+  const { openArcade } = useArcade();
+  const [showHint, setShowHint] = useState(false);
 
   /* Entrance animation */
   useEffect(() => {
@@ -49,6 +52,28 @@ export default function Hero() {
     }, sectionRef);
 
     return () => ctx.revert();
+  }, []);
+
+  /* One-time arcade hint — sessionStorage gated */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
+    if (sessionStorage.getItem('hint-shown')) return;
+
+    const showTimer = setTimeout(() => {
+      setShowHint(true);
+      sessionStorage.setItem('hint-shown', 'true');
+    }, 2000);
+
+    const hideTimer = setTimeout(() => {
+      setShowHint(false);
+    }, 7000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   /* Addition 4 — Scroll velocity distortion on hero name */
@@ -97,7 +122,9 @@ export default function Hero() {
 
       {/* Edge-to-edge display name with wave canvas */}
       <div className="hero-name-wrapper" data-cursor-wave>
-        <HeroWaveCanvas nameRef={nameRef} />
+        <div className="hero-wave-canvas-wrap">
+          <HeroWaveCanvas nameRef={nameRef} />
+        </div>
         <h1 ref={nameRef} className="hero-name">
           {PERSONAL.name}
           <span className="hero-accent-dot">.</span>
@@ -111,6 +138,9 @@ export default function Hero() {
       <div className="hero-bottom-bar">
         <div className="hero-bottom-left">
           <span ref={scrollRef} className="hero-scroll-label">Scroll</span>
+          {showHint && (
+            <span className="hero-arcade-hint">↓ scroll to unlock arcade</span>
+          )}
         </div>
 
         <div className="hero-bottom-center">
@@ -122,6 +152,18 @@ export default function Hero() {
                 {role}
               </span>
             ))}
+            <span 
+              className="hero-role-tag hero-arcade-trigger" 
+              onClick={() => openArcade()}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') openArcade();
+              }}
+            >
+              <span className="hero-role-divider">/</span>
+              ↳ ARCADE MODE
+            </span>
           </div>
         </div>
 
@@ -141,3 +183,4 @@ export default function Hero() {
     </section>
   );
 }
+

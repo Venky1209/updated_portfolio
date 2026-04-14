@@ -75,6 +75,42 @@ export const EXPERIENCE = [
 
 export const PROJECTS = [
   {
+    title: 'HackRadar',
+    year: '2025',
+    role: 'Full-Stack Developer',
+    subtitle: 'Hackathon Intelligence Platform',
+    description:
+      'Full-stack platform for discovering hackathons with real-time filters, static-first architecture across 60+ events, and sub-2s load times.',
+    liveUrl: 'https://hack-radar-omega.vercel.app/',
+    repoUrl: 'https://github.com/Venky1209/HackRadar',
+    techStack: ['Next.js 14', 'TypeScript', 'Supabase', 'Tailwind CSS'],
+    coverImage: '/projects/hackradar.jpg',
+  },
+  {
+    title: '108-Overload',
+    year: '2025',
+    role: 'RL Systems + Full-Stack Developer',
+    subtitle: 'Emergency Dispatch Simulation System',
+    description:
+      'RL-style ambulance dispatch simulator with dynamic real-world constraints, multi-difficulty scenarios (EASY/MEDIUM/HARD), and live metric visualization.',
+    liveUrl: 'https://huggingface.co/spaces/Venky12099/dispatch-showcase',
+    repoUrl: 'https://github.com/Venky1209/dispatch-triage',
+    techStack: ['Reinforcement Learning', 'Gradio', 'Python', 'Simulation'],
+    coverImage: '/projects/108-overload.jpg',
+  },
+  {
+    title: 'HeartWise',
+    year: '2024',
+    role: 'ML Engineer',
+    subtitle: 'AI-Powered Cardiac Health Predictor',
+    description:
+      'Built a data-driven machine learning system for cardiac risk prediction with 91% accuracy, involving dataset preprocessing, model evaluation, and Gemini API integration.',
+    liveUrl: 'https://landing-page-phi-six-97.vercel.app/',
+    repoUrl: 'https://github.com/Venky1209/Heartwise',
+    techStack: ['ML', 'TensorFlow', 'Gemini API', 'Healthcare'],
+    coverImage: '/projects/heartwise.jpg',
+  },
+  {
     title: 'PRIZM',
     year: '2025',
     role: 'Full-Stack Developer',
@@ -85,18 +121,6 @@ export const PROJECTS = [
     repoUrl: null,
     techStack: ['Python', 'NLP', 'Signal Processing', 'AI'],
     coverImage: '/projects/prizm.jpg',
-  },
-  {
-    title: 'HeartWise',
-    year: '2024',
-    role: 'ML Engineer',
-    subtitle: 'AI-Powered Cardiac Health Predictor',
-    description:
-      'Built a data-driven machine learning system for cardiac risk prediction with 91% accuracy, involving dataset preprocessing, model evaluation, and Gemini API integration.',
-    liveUrl: null,
-    repoUrl: 'https://github.com/Venky1209/Heartwise',
-    techStack: ['ML', 'TensorFlow', 'Gemini API', 'Healthcare'],
-    coverImage: '/projects/heartwise.jpg',
   },
   {
     title: 'UI & UX Portfolio',
@@ -124,7 +148,10 @@ export const SKILLS: Record<string, { name: string; icon: string }[]> = {
   ],
   'Frameworks & Data': [
     { name: 'React.js', icon: 'react' },
+    { name: 'Next.js', icon: 'nextjs' },
     { name: 'Node.js', icon: 'nodejs' },
+    { name: 'TypeScript', icon: 'typescript' },
+    { name: 'Tailwind', icon: 'tailwindcss' },
     { name: 'Flask', icon: 'flask' },
     { name: 'TensorFlow', icon: 'tensorflow' },
     { name: 'Scikit-learn', icon: 'scikitlearn' },
@@ -137,6 +164,7 @@ export const SKILLS: Record<string, { name: string; icon: string }[]> = {
     { name: 'GCP', icon: 'googlecloud' },
     { name: 'Azure', icon: 'azure' },
     { name: 'Docker', icon: 'docker' },
+    { name: 'Vercel', icon: 'vercel' },
     { name: 'GitHub', icon: 'github' },
     { name: 'Jira', icon: 'jira' },
     { name: 'Figma', icon: 'figma' },
@@ -154,7 +182,10 @@ export const SKILL_DETAILS: Record<string, { years: string; projects: number; pr
   HTML: { years: '3+', projects: 8, proficiency: 5 },
   CSS: { years: '3+', projects: 8, proficiency: 5 },
   'React.js': { years: '2+', projects: 5, proficiency: 5 },
+  'Next.js': { years: '1+', projects: 3, proficiency: 4 },
   'Node.js': { years: '2+', projects: 4, proficiency: 4 },
+  TypeScript: { years: '1+', projects: 3, proficiency: 4 },
+  Tailwind: { years: '1+', projects: 3, proficiency: 4 },
   Flask: { years: '1+', projects: 2, proficiency: 3 },
   TensorFlow: { years: '1+', projects: 3, proficiency: 4 },
   'Scikit-learn': { years: '1+', projects: 3, proficiency: 4 },
@@ -165,6 +196,7 @@ export const SKILL_DETAILS: Record<string, { years: string; projects: number; pr
   GCP: { years: '1+', projects: 1, proficiency: 2 },
   Azure: { years: '1+', projects: 1, proficiency: 2 },
   Docker: { years: '1+', projects: 2, proficiency: 3 },
+  Vercel: { years: '1+', projects: 3, proficiency: 4 },
   GitHub: { years: '3+', projects: 8, proficiency: 5 },
   Jira: { years: '1+', projects: 3, proficiency: 3 },
   Figma: { years: '2+', projects: 4, proficiency: 4 },
@@ -185,8 +217,20 @@ export const ACHIEVEMENTS = [
     description: 'Winners (Madras Section) for an AI and signal processing solution.',
   },
   {
+    title: 'Project DeepBlue — Semi-Finalist',
+    description: 'Semi-Finalist in Project DeepBlue (Season 11).',
+  },
+  {
+    title: '2nd Runner-Up, Innovathon 4.0',
+    description: '2nd Runner-Up at Innovathon 4.0 for HeartWise — AI-Powered Cardiac Health Predictor.',
+  },
+  {
     title: 'Paper Presentation — 1st Place',
     description: 'First Place in Paper Presentation at Saveetha Engineering College.',
+  },
+  {
+    title: 'ML + Audio Workshop',
+    description: 'Conducted ML + Audio Workshop for 150+ students in collaboration with IEEE SSIT Society.',
   },
   {
     title: 'Hack For Impact — Top 20',
