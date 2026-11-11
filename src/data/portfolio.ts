@@ -8,7 +8,7 @@ export const PERSONAL = {
   fullName: 'Venkatkaushal A',
   roles: ['CS Engineer', 'ML Enthusiast', 'Full-Stack Builder'],
   tagline: 'I build things that think.',
-  bio: `I'm a Computer Science undergrad at Sri Sairam Engineering College pursuing a parallel BS in Data Science from IIT Madras. I lead teams, build AI-driven products, and care deeply about writing code that solves real problems — from real-time audio mastering to cardiac health prediction.`,
+  bio: `I'm a final-year Computer Science student at Sri Sairam Engineering College, pursuing a parallel BS in Data Science from IIT Madras. Most recently I built agent features and an evaluation harness at Jetty AI. I lead teams, build AI-driven products, and care about code that solves real problems, from real-time audio mastering to cardiac health prediction.`,
   location: 'Chennai, Tamil Nadu',
   email: 'yunoa992@gmail.com',
   phone: '+91 9873704932',
@@ -21,9 +21,9 @@ export const EDUCATION = [
   {
     school: 'Sri Sairam Engineering College',
     degree: 'Bachelor of Engineering in Computer Science',
-    detail: 'CGPA 8.56',
+    detail: 'CGPA 8.66',
     location: 'Chennai, TN',
-    period: 'Sep 2023 — Present',
+    period: 'Sep 2023 — May 2027 (Expected)',
   },
   {
     school: 'Indian Institute of Technology Madras',
@@ -36,12 +36,21 @@ export const EDUCATION = [
 
 export const EXPERIENCE = [
   {
-    role: 'Team Leader, Web Development',
-    company: 'Maestrominds Startup',
-    location: 'Chennai, TN',
-    period: 'Aug 2024 — Present',
+    role: 'AI Engineer (Early Team Member, Founding Engineer Track)',
+    company: 'Jetty AI',
+    location: 'Remote (Menlo Park, CA)',
+    period: 'May 2026 — Oct 2026',
     description:
-      'Led a team of three developers to deliver four full-stack client projects, improving delivery timelines by 30% while mentoring peers on code quality, documentation, and structured development practices.',
+      'Built features across OpenJetty and Row-Bot in TypeScript and Python: targeted email campaigns with audience segmentation, undo through change records, and approval-aware assistant plugins. Built an evaluation harness that replays scripted scenarios against the agent on an isolated seeded account, and used it to reproduce and validate fixes in multi-agent execution, RAG memory, and approval flows.',
+    tags: ['AI Agents', 'TypeScript', 'Python', 'Evaluation'],
+  },
+  {
+    role: 'Software Engineer and Project Lead (Freelance)',
+    company: 'Maestrominds',
+    location: 'Chennai, TN',
+    period: 'Aug 2024 — May 2026',
+    description:
+      'Led a team of three developers to deliver four full-stack client applications, owning backend development, REST API integration, and deployment, and improving delivery timelines by 30%.',
     tags: ['Leadership', 'Full-Stack', 'React', 'Node.js'],
   },
   {
@@ -205,12 +214,20 @@ export const SKILL_DETAILS: Record<string, { years: string; projects: number; pr
 
 export const ACHIEVEMENTS = [
   {
-    title: 'Patent Published',
+    title: 'Claude Fable 5 Build Day — Finalist',
+    description: 'Finalist at the Claude Fable 5 Build Day, San Francisco.',
+  },
+  {
+    title: 'AES Saul Walker Student Design Competition 2026',
+    description: 'Finalist (Europe) for PRIZM, an AI audio mastering assistant.',
+  },
+  {
+    title: 'Patent Application Published',
     description: 'System and Method for AI-Driven Natural Language Controlled Real-Time Audio Mastering.',
   },
   {
     title: 'Smart India Hackathon 2025',
-    description: 'Nodal Winner — National level hackathon by Govt. of India.',
+    description: 'Nodal Shortlist — National level hackathon by Govt. of India.',
   },
   {
     title: 'IEEE SPS ISPA 2025',
